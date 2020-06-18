@@ -31,12 +31,13 @@ public class Make {
 
     @PostUpdate
     public void onPostUpdate(){
-        MakeCompleted makeCompleted = new MakeCompleted();
-        BeanUtils.copyProperties(this, makeCompleted);
-        makeCompleted.setMakeId(this.getMakeId());
-        makeCompleted.setStatus("Make Completed");
-        makeCompleted.publishAfterCommit();
-
+        if(this.getStatus().equals("completed")) {
+            MakeCompleted makeCompleted = new MakeCompleted();
+            BeanUtils.copyProperties(this, makeCompleted);
+            makeCompleted.setMakeId(this.getMakeId());
+            makeCompleted.setStatus("Make Completed");
+            makeCompleted.publishAfterCommit();
+        }
     }
 
 
