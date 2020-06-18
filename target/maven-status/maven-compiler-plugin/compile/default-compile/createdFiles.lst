@@ -1,4 +1,5 @@
 coffeeshop\Application.class
+coffeeshop\MakeCanceled.class
 coffeeshop\PolicyHandler.class
 coffeeshop\Paid.class
 coffeeshop\MakeController.class

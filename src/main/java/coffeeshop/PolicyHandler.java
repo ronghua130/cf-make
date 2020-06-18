@@ -12,17 +12,21 @@ public class PolicyHandler{
     MakeRepository makeRepository;
 
     @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverPayed_StartMake(@Payload Paid payed){
+    public void wheneverPayed_StartMake(@Payload Paid paid){
 
-        if(payed.isMe()){
-            System.out.println("##### listener StartMake : " + payed.toJson());
+        if(paid.isMe()){
+            System.out.println("##### listener StartMake : " + paid.toJson());
 
             Make make = new Make();
-            make.setOrderId(payed.getOrderId());
-            make.setCoffeId(payed.getCoffeeId());
-            make.setCoffeName(payed.getCoffeeName());
-            make.setPrice(payed.getPrice());
-            make.setQty(payed.getQty());
+            make.setOrderId(paid.getOrderId());
+            make.setCoffeId(paid.getCoffeeId());
+            make.setCoffeName(paid.getCoffeeName());
+            make.setPrice(paid.getPrice());
+            make.setQty(paid.getQty());
+            make.setTotalAmount(paid.getTotalAmount());
+            make.setOrderStatus(paid.getOrderStatus());
+            make.setPaymentStatus(paid.getPaymentStatus());
+            make.setMakeStatus("Make Started");
             makeRepository.save(make);
         }
     }

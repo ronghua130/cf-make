@@ -16,30 +16,82 @@ public class Make {
     private String coffeeName;
     private Float price;
     private Integer qty;
-    private String status;
+
+    public Float getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Float totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    private Float totalAmount;
+    private String orderStatus;
+    private String paymentStatus;
+    private String makeStatus;
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+
+
+    public String getMakeStatus() {
+        return makeStatus;
+    }
+
+    public void setMakeStatus(String makeStatus) {
+        this.makeStatus = makeStatus;
+    }
 
 
     @PostPersist
     public void onPostPersist(){
         MakeStarted makeStarted = new MakeStarted();
         BeanUtils.copyProperties(this, makeStarted);
+        makeStarted.setOrderId(this.getOrderId());
         makeStarted.setMakeId(this.getMakeId());
-        makeStarted.setStatus("Make Started");
+        makeStarted.setTotalAmount(this.getTotalAmount());
+        makeStarted.setOrderStatus(this.getOrderStatus());
+        makeStarted.setPaymentStatus(this.getPaymentStatus());
+        makeStarted.setMakeStatus(this.getMakeStatus());
         makeStarted.publishAfterCommit();
 
     }
 
     @PostUpdate
     public void onPostUpdate(){
-        if(this.getStatus().equals("completed")) {
+        if(this.getMakeStatus().equals("completed")) {
             MakeCompleted makeCompleted = new MakeCompleted();
             BeanUtils.copyProperties(this, makeCompleted);
+            makeCompleted.setOrderId(this.getOrderId());
             makeCompleted.setMakeId(this.getMakeId());
-            makeCompleted.setStatus("Make Completed");
+            makeCompleted.setOrderStatus(this.getOrderStatus());
+            makeCompleted.setPaymentStatus(this.getPaymentStatus());
+            makeCompleted.setMakeStatus("Make Completed");
             makeCompleted.publishAfterCommit();
         }
     }
 
+    @PreRemove
+    public void onPreRemove(){
+        MakeCanceled makeCanceled = new MakeCanceled();
+        BeanUtils.copyProperties(this, makeCanceled);
+        makeCanceled.setMakeStatus("Make Canceled");
+        makeCanceled.publishAfterCommit();
+    }
 
     public Long getMakeId() {
         return makeId;
@@ -83,13 +135,7 @@ public class Make {
     public void setQty(Integer qty) {
         this.qty = qty;
     }
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
 
 

@@ -8,7 +8,42 @@ public class MakeStarted extends AbstractEvent {
     private String coffeeName;
     private Float price;
     private Integer qty;
-    private String status;
+    private String orderStatus;
+    private String paymentStatus;
+    private String makeStatus;
+    public Float getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Float totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    private Float totalAmount;
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public String getMakeStatus() {
+        return makeStatus;
+    }
+
+    public void setMakeStatus(String makeStatus) {
+        this.makeStatus = makeStatus;
+    }
+
 
     public MakeStarted(){
         super();
@@ -53,11 +88,5 @@ public class MakeStarted extends AbstractEvent {
     public void setQty(Integer qty) {
         this.qty = qty;
     }
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }
